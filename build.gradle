@@ -3,6 +3,9 @@ plugins {
     id 'eclipse'
 }
 
+version = '1.0.0'
+group = 'nl.thedutchmc'
+
 repositories {
     mavenLocal()
     jcenter()
