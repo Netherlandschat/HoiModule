@@ -3,6 +3,7 @@ package nl.thedutchmc.hoimodule;
 import java.util.List;
 
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import nl.thedutchmc.hoimodule.listeners.EventCommon;
 import nl.thedutchmc.hoimodule.listeners.GuildMessageReceivedEventListener;
 import nl.thedutchmc.hoimodule.listeners.GuildMessageUpdateEventListener;
 import nl.thedutchmc.netherlandsbot.annotations.RegisterBotModule;
@@ -42,7 +43,9 @@ public class HoiModule extends BotModule {
 		@SuppressWarnings("unchecked")
 		List<String> notHoiMessages = (List<String>) config.get("notHoiMessages");
 		
-		super.registerEventListener(new GuildMessageReceivedEventListener(channelId, notHoiMessages));
-		super.registerEventListener(new GuildMessageUpdateEventListener(channelId, notHoiMessages));
+		EventCommon common = new EventCommon(notHoiMessages);
+		
+		super.registerEventListener(new GuildMessageReceivedEventListener(channelId, common));
+		super.registerEventListener(new GuildMessageUpdateEventListener(channelId, common));
 	}
 }
