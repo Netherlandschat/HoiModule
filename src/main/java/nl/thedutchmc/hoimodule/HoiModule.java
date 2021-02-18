@@ -1,7 +1,10 @@
 package nl.thedutchmc.hoimodule;
 
+import java.util.List;
+
 import net.dv8tion.jda.api.requests.GatewayIntent;
-import nl.thedutchmc.hoimodule.listeners.MessageReceivedEventListener;
+import nl.thedutchmc.hoimodule.listeners.GuildMessageReceivedEventListener;
+import nl.thedutchmc.hoimodule.listeners.GuildMessageUpdateEventListener;
 import nl.thedutchmc.netherlandsbot.annotations.RegisterBotModule;
 import nl.thedutchmc.netherlandsbot.modules.BotModule;
 import nl.thedutchmc.netherlandsbot.modules.io.FileType;
@@ -26,8 +29,20 @@ public class HoiModule extends BotModule {
 		
 		ModuleConfig config = fileHandler.getModuleConfig();
 		
-		super.registerEventListener(new MessageReceivedEventListener(
-				(Long) config.get("channelId"),
-				(String) config.get("notHoiMessage")));
+		Object channelIdObj = config.get("channelId");
+		long channelId = 0L;
+		if(channelIdObj instanceof Long) {
+			channelId = (long)  channelIdObj;
+		} else if(channelIdObj instanceof Integer) {
+			channelId = ((Integer) channelIdObj).longValue();
+		} else {
+			throw new RuntimeException("Invalid datatype for config option 'channelId'. Should be Long.");
+		}
+		
+		@SuppressWarnings("unchecked")
+		List<String> notHoiMessages = (List<String>) config.get("notHoiMessages");
+		
+		super.registerEventListener(new GuildMessageReceivedEventListener(channelId, notHoiMessages));
+		super.registerEventListener(new GuildMessageUpdateEventListener(channelId, notHoiMessages));
 	}
 }

@@ -1,16 +1,19 @@
 package nl.thedutchmc.hoimodule.listeners;
 
+import java.util.List;
+
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import nl.thedutchmc.hoimodule.Util;
 
-public class MessageReceivedEventListener extends ListenerAdapter {
+public class GuildMessageReceivedEventListener extends ListenerAdapter {
 
 	private long channelId;
-	private String notHoiMessage;
+	private List<String> notHoiMessages;
 	
-	public MessageReceivedEventListener(long channelId, String notHoiMessage) {
+	public GuildMessageReceivedEventListener(long channelId, List<String> notHoiMessages) {
 		this.channelId = channelId;
-		this.notHoiMessage = notHoiMessage;
+		this.notHoiMessages = notHoiMessages;
 	}
 	
 	@Override
@@ -23,9 +26,9 @@ public class MessageReceivedEventListener extends ListenerAdapter {
 			return;
 		}
 		
-		String message = event.getMessage().getContentDisplay().toLowerCase();
+		String message = event.getMessage().getContentDisplay().replace(" ", "").strip();
 		if(!message.equalsIgnoreCase("hoi")) {
-			event.getChannel().sendMessage(event.getAuthor().getAsMention() + " " + notHoiMessage).queue(callbackMsg -> {
+			event.getChannel().sendMessage(event.getAuthor().getAsMention() + " " + this.notHoiMessages.get(Util.getRandomInt(0, this.notHoiMessages.size() -1))).queue(callbackMsg -> {
 				try {
 					Thread.sleep(10000);
 				} catch (InterruptedException e) {
@@ -34,6 +37,6 @@ public class MessageReceivedEventListener extends ListenerAdapter {
 				callbackMsg.delete().queue();
 			});
 			event.getMessage().delete().queue();
-		}		
+		}
 	}
 }

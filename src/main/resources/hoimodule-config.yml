@@ -1,2 +1,4 @@
 channelId: 0
-notHoiMessage: "Moet jij eens goed luisteren stuk stront dat je bent. Wij staan hier alleen 'Hoi' toe!" 
+notHoiMessages: 
+- "Moet jij eens goed luisteren stuk stront dat je bent. Wij staan hier alleen 'Hoi' toe!" 
+- "Oi vieze tering lijer. Kun je niet lezen ofzo? Alleen 'Hoi' hier."
