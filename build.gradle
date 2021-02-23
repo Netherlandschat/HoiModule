@@ -30,3 +30,12 @@ task ghActions(type: Jar) {
 	
 	destinationDirectory = file("$rootDir/actions")
 }
+
+task dockerBuild(type: Jar) {
+	description 'Task used for Docker builds'
+	version = ''
+	archiveClassifier = ''
+	archiveBaseName = 'HoiModule'
+	
+	from sourceSets.main.output
+}
